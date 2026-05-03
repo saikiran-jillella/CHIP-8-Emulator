@@ -1,3 +1,7 @@
+use chip_8_emulator::Memory;
+
 fn main() {
-    println!("Hello, world!");
+
+    let memory = Memory::new();
+    println!("{}", memory.access(0));
 }
