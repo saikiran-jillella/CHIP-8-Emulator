@@ -9,8 +9,7 @@ fn main() {
     let rom = fs::read(&args[1]).expect("ROM missing");
     let super_mode = args.iter().any(|a| a == "-s" || a == "--super");
 
-    let mut display = Display::new(super_mode);
-    let mut chip8 = Chip8::new(150);
+    let mut chip8 = Chip8::new(150, super_mode);
 
-    chip8.run(&rom, &mut display);
+    chip8.run(&rom);
 }
