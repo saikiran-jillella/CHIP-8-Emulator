@@ -1,4 +1,4 @@
-use crate::{Chip8, Input};
+use crate::{Chip8, Input, Speaker};
 use std::{
     thread::sleep,
     time::{Duration, Instant},
@@ -21,7 +21,7 @@ impl Emulator {
         }
     }
 
-    pub fn run<I: Input>(mut self, rom: &[u8], input: &mut I) {
+    pub fn run<I: Input, S: Speaker>(mut self, rom: &[u8], input: &mut I, speaker: &mut S) {
         print!("\x1B[2J\x1B[H");
 
         self.chip8.load_rom(rom);
@@ -48,15 +48,22 @@ impl Emulator {
             }
 
             while timer_accumulator >= self.timer_tick {
-                if self.chip8.sound_timer() > 0 {
-                    print!("\x07");
+                let st = self.chip8.sound_timer();
+
+                println!("TIMER: ST={st}");
+
+                if st > 0 {
+                    speaker.start();
+                } else {
+                    speaker.stop();
                 }
 
                 self.chip8.decrement_timers();
+
                 timer_accumulator -= self.timer_tick;
             }
 
-            if frame_accumulator >= self.frame_period {
+            while frame_accumulator >= self.frame_period {
                 self.chip8.render();
                 frame_accumulator -= self.frame_period;
             }

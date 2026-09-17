@@ -1,3 +1,4 @@
+use crate::{Chip8, Input};
 use evdev::{Device, EventSummary, KeyCode};
 use std::io;
 use udev::Enumerator;
@@ -71,8 +72,8 @@ impl Keyboard {
     }
 }
 
-impl crate::Input for Keyboard {
-    fn update(&mut self, chip8: &mut crate::Chip8) {
+impl Input for Keyboard {
+    fn update(&mut self, chip8: &mut Chip8) {
         let events = match self.device.fetch_events() {
             Ok(events) => events,
             Err(e) if e.kind() == io::ErrorKind::WouldBlock => return,

@@ -9,4 +9,6 @@ path = "src/lib.rs"
 [dependencies]
 evdev = "0.13.2"
 rand = "0.10.2"
+rodio = { version = "0.22.2", features = ["playback"] }
+
 udev = "0.9.3"

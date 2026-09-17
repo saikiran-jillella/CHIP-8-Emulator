@@ -255,12 +255,14 @@ impl Chip8 {
                     0x07 => self.v[x] = self.delay_timer,
                     0x15 => self.delay_timer = self.v[x],
                     0x18 => self.sound_timer = self.v[x],
+
                     // Add to index
                     0x1E => {
                         let (result, overflow) = self.i.overflowing_add(self.v[x] as u16);
                         self.i = result;
                         self.v[0xF] = overflow as u8;
                     }
+
                     // Get key
                     0x0A => match self.waiting_for_key {
                         Some(key) if !self.keys[key] => {
